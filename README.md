@@ -1,39 +1,41 @@
 # apdl-parser
 
-Небольшая библиотека на Rust для парсинга текстовых листингов из **ANSYS APDL** (вывод команд вроде `NLIST`, `ELIST`, `DLIST`, `PRNSOL`).
+Русская версия: [`README.ru.md`](README.ru.md)
 
-Проект полезен, когда нужно **автоматически вытащить сетку/результаты из текстового вывода** APDL и дальше обработать это в своём пайплайне (CSV/JSON, постпроцессинг, проверки качества, интеграция с Python и т.д.).
+A small Rust library for parsing **ANSYS APDL** text listings (output of commands like `NLIST`, `ELIST`, `DLIST`, `PRNSOL`).
 
-## Что умеет
+It is useful when you need to **extract mesh data / results from APDL text output** and feed them into your own pipeline (CSV/JSON export, postprocessing, quality checks, Python integration, etc.).
 
-- Парсит строки данных (whitespace-separated) в типизированные структуры:
-  - `Nlist`: координаты узлов (`NLIST`)
-  - `Elist`: информация об элементах и их узлах (`ELIST`)
-  - `Dlist`: табличные данные вида `node label real imag` (`DLIST`)
-  - `Prnsol`: пример результатов по узлам (`PRNSOL`, сейчас `NODE TEMP`)
-- Имеет общий хелпер `get_list()` для чтения файла и парсинга в `Vec<T>`.
+## Features
 
-## Типовые сценарии применения
+- Parses whitespace-separated data lines into strongly typed structs:
+  - `Nlist`: node coordinates (`NLIST`)
+  - `Elist`: element info and its nodes (`ELIST`)
+  - `Dlist`: tabular data like `node label real imag` (`DLIST`)
+  - `Prnsol`: nodal results example (`PRNSOL`, currently `NODE TEMP`)
+- Includes a generic helper `get_list()` to read a file and parse it into `Vec<T>`.
 
-- **Экспорт сетки** из APDL в свой формат (узлы/элементы) для дальнейшей геометрической обработки.
-- **Проверки качества модели** (поиск “дыр” в нумерации, контроль координат/материалов/типов элементов).
-- **Постпроцессинг результатов**: собрать результаты из `PRNSOL`/`DLIST` и построить графики/отчёты.
-- **Интеграция в CI/пайплайны расчётов**: сравнение результатов между версиями модели, регресс-тесты.
+## Typical use cases
 
-## Установка
+- **Mesh export** from APDL into your own format (nodes/elements) for further geometry processing.
+- **Model quality checks** (detect numbering gaps, validate coordinates/materials/element types).
+- **Results postprocessing**: collect values from `PRNSOL`/`DLIST` and generate plots/reports.
+- **CI / simulation pipelines**: compare results between model versions, regression tests.
 
-Добавьте зависимость в `Cargo.toml`:
+## Installation
+
+Add the dependency to your `Cargo.toml`:
 
 ```toml
 [dependencies]
 apdl-parser = { git = "https://github.com/<you>/<repo>" }
 ```
 
-После публикации в crates.io можно будет заменить на обычную версию.
+After publishing to crates.io you can switch to a normal version requirement.
 
-## Использование
+## Usage
 
-### Пример: прочитать `NLIST` из файла
+### Example: read `NLIST` from a file
 
 ```rust
 use std::path::Path;
@@ -48,9 +50,9 @@ fn main() -> anyhow::Result<()> {
 }
 ```
 
-### Примеры для файлов из репозитория (`files/*.lis`)
+### Examples for repository files (`files/*.lis`)
 
-В репозитории есть папка `files/` с примерами листингов. Их можно прогнать через готовые примеры:
+This repository contains a `files/` folder with sample listings. You can run them via the included examples:
 
 ```bash
 cargo run --example parse_nlist
@@ -59,7 +61,7 @@ cargo run --example parse_dlist
 cargo run --example parse_prnsol
 ```
 
-### Пример: парсинг одной строки
+### Example: parse a single line
 
 ```rust
 use apdl_parser::Elist;
@@ -71,20 +73,20 @@ fn main() -> anyhow::Result<()> {
 }
 ```
 
-## Поддерживаемые типы
+## Supported types
 
 - `Nlist` — `src/nlist.rs`
 - `Elist` — `src/elist.rs`
 - `Dlist` — `src/dlist.rs`
 - `Prnsol` — `src/prnsol.rs`
 
-## Roadmap (идеи)
+## Roadmap (ideas)
 
-- Больше вариантов `PRNSOL` (не только `TEMP`).
-- Болеe строгая валидация формата и сообщения об ошибках.
-- Экспорт в CSV/JSON (в отдельном crate, чтобы не тащить зависимости в core).
-- Опциональная поддержка `f64`.
+- More `PRNSOL` variants (not only `TEMP`).
+- Stricter format validation and better error messages.
+- CSV/JSON export (in a separate crate to keep core dependencies minimal).
+- Optional `f64` support.
 
-## Лицензия
+## License
 
-Двойная лицензия: **MIT OR Apache-2.0**. См. `LICENSE-MIT` и `LICENSE-APACHE`.
+Dual-licensed under **MIT OR Apache-2.0**. See `LICENSE-MIT` and `LICENSE-APACHE`.
