@@ -26,7 +26,7 @@
 
 ```toml
 [dependencies]
-apdl-parser = { git = "https://github.com/<you>/<repo>" }
+apdl-parser = { git = "https://github.com/indraine/apdl-parser" }
 ```
 
 После публикации в crates.io можно будет заменить на обычную версию.

@@ -28,7 +28,7 @@ Add the dependency to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-apdl-parser = { git = "https://github.com/<you>/<repo>" }
+apdl-parser = { git = "https://github.com/indraine/apdl-parser" }
 ```
 
 After publishing to crates.io you can switch to a normal version requirement.
